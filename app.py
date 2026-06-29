@@ -40,8 +40,8 @@ if uploaded_zip is not None:
             else:
                 try:
                     # Load both layers
-                    addresses = gpd.read_file(gdb_path, layer="ADDRESS")
-                    boundaries = gpd.read_file(gdb_path, layer="NAP_BOUNDARY")
+                    addresses = gpd.read_file(gdb_path, layer="ADDRESS", engine="pyogrio")
+                    boundaries = gpd.read_file(gdb_path, layer="NAP_BOUNDARY", engine="pyogrio")
 
                     # Match coordinate systems
                     if addresses.crs != boundaries.crs:
