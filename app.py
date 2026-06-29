@@ -103,3 +103,5 @@ if uploaded_zip is not None:
 
                 except Exception as e:
                     st.error(f"Error processing file: {e}")
+
+st.write(joined.columns.tolist())
