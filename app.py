@@ -108,4 +108,6 @@ if uploaded_zip is not None:
                     st.dataframe(final_summary)
 
                 except Exception as e:
+                    import traceback
                     st.error(f"Error processing file: {e}")
+                    st.code(traceback.format_exc())
