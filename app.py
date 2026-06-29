@@ -52,7 +52,7 @@ if uploaded_zip is not None:
 
                     # DEBUG: show actual column names
                     for col in joined.columns:
-    st.write(col)
+                        st.write(col)
 
                     # Build grouped summary
                     summary_source = joined[['areaname', 'street_name', 'house_number']].copy()
