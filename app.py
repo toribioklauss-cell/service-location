@@ -67,7 +67,7 @@ if uploaded_zip is not None:
 
                     def combine_addresses(group):
                         numbers = group['house_number'].astype(str).tolist()
-                        street = group['street_name'].iloc[0]
+                        street = group.name[1]  # group.name is (areaname, street_name) tuple
                         return f"{', '.join(numbers)} {street}"
 
                     grouped = (
