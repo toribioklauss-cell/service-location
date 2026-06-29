@@ -51,7 +51,8 @@ if uploaded_zip is not None:
                     joined = gpd.sjoin(addresses, boundaries, how="left", predicate="within")
 
                     # DEBUG: show actual column names
-                    st.write("Columns available:", joined.columns.tolist())
+                    for col in joined.columns:
+    st.write(col)
 
                     # Build grouped summary
                     summary_source = joined[['areaname', 'street_name', 'house_number']].copy()
