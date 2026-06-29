@@ -50,12 +50,11 @@ if uploaded_zip is not None:
                     # Spatial join
                     joined = gpd.sjoin(addresses, boundaries, how="left", predicate="within")
 
-                    # DEBUG: test each column individually
-                    for needed_col in ['areaname', 'street_name', 'house_number']:
-                        if needed_col in joined.columns:
-                            st.write(f"FOUND: {needed_col}")
-                        else:
-                            st.write(f"MISSING: {needed_col}")
+                    # DEBUG: check for duplicate column names
+                    from collections import Counter
+                    col_counts = Counter(joined.columns)
+                    duplicates = [col for col, count in col_counts.items() if count > 1]
+                    st.write("Duplicate columns:", duplicates)
 
                     # Build grouped summary
                     summary_source = joined[['areaname', 'street_name', 'house_number']].copy()
