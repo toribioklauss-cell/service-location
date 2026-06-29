@@ -50,6 +50,9 @@ if uploaded_zip is not None:
                     # Spatial join
                     joined = gpd.sjoin(addresses, boundaries, how="left", predicate="within")
 
+                    # DEBUG: show actual column names
+                    st.write("Columns available:", joined.columns.tolist())
+
                     # Build grouped summary
                     summary_source = joined[['areaname', 'street_name', 'house_number']].copy()
                     summary_source['house_number_numeric'] = pd.to_numeric(
@@ -103,5 +106,3 @@ if uploaded_zip is not None:
 
                 except Exception as e:
                     st.error(f"Error processing file: {e}")
-
-st.write(joined.columns.tolist())
