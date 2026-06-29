@@ -5,7 +5,7 @@ import zipfile
 import tempfile
 import os
 
-st.title("NAP Address Grouping Tool")
+st.title("Address Grouping Tool")
 st.write("Upload your GDB zip file to generate a grouped address spreadsheet.")
 
 uploaded_zip = st.file_uploader("Upload .zip file containing your .gdb folder", type="zip")
