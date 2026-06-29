@@ -47,16 +47,10 @@ if uploaded_zip is not None:
                     if addresses.crs != boundaries.crs:
                         addresses = addresses.to_crs(boundaries.crs)
 
-                    # Spatial join
+                    # Spatial join: tag each address with the boundary it falls inside
                     joined = gpd.sjoin(addresses, boundaries, how="left", predicate="within")
 
-                    # DEBUG: check for duplicate column names
-                    from collections import Counter
-                    col_counts = Counter(joined.columns)
-                    duplicates = [col for col, count in col_counts.items() if count > 1]
-                    st.write("Duplicate columns:", duplicates)
-
-                    # Build grouped summary
+                    # Build grouped summary: combine house numbers per street, per boundary
                     summary_source = joined[['areaname', 'street_name', 'house_number']].copy()
                     summary_source['house_number_numeric'] = pd.to_numeric(
                         summary_source['house_number'], errors='coerce'
@@ -88,7 +82,7 @@ if uploaded_zip is not None:
                         if pd.api.types.is_datetime64_any_dtype(export_df[col]):
                             export_df[col] = export_df[col].dt.tz_localize(None)
 
-                    # Write to an in-memory Excel file
+                    # Write both sheets to an Excel file
                     output_path = os.path.join(temp_dir, "output.xlsx")
                     with pd.ExcelWriter(output_path, engine='openpyxl') as writer:
                         export_df.to_excel(writer, sheet_name='Detail', index=False)
@@ -96,7 +90,7 @@ if uploaded_zip is not None:
 
                     st.success(f"Done! {len(addresses)} addresses matched to {len(boundaries)} boundaries.")
 
-                    # Let user download/save the result
+                    # Let user download the result
                     with open(output_path, "rb") as f:
                         st.download_button(
                             label="Download Output Excel File",
@@ -108,6 +102,4 @@ if uploaded_zip is not None:
                     st.dataframe(final_summary)
 
                 except Exception as e:
-                    import traceback
                     st.error(f"Error processing file: {e}")
-                    st.code(traceback.format_exc())
